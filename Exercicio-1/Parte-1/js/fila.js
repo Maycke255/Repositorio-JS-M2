@@ -5,35 +5,60 @@ escolher entre as opções de “Novo paciente”, para adicionar um novo pacien
 primeiro paciente da fila e mostra na tela o nome do paciente consultado, e “Sair”. O programa só deve ser encerrado ao escolher a opção de “Sair”, caso 
 contrário deve voltar ao menu. */
 
-let patientQueue = []
+let patientQueue = []; // Array para armazenar os pacientes
 
-let work = prompt(`Bom dia Doutor.\n`+
-    `Você tem pacientes hoje?\n`+
-    `Caso não, você poderá descansar. (sim/não)`);
+let work = prompt(
+    `Bom dia, Doutor.\nVocê tem pacientes hoje?\nCaso não, você poderá descansar. (sim/não)`
+);
 
-if (work === "não") {
-
-    `Obrigado Doutor, va para casa e descanse.`
-
+if (work.toLowerCase() === "não") {
+    alert("Obrigado Doutor, vá para casa e descanse.");
 } else {
+    alert("Por favor, insira os nomes dos pacientes por ordem de chegada.");
 
-    let patients = prompt(`Por favor, digite o nome dos pacientes por ordem de chegada.`)
-    patientQueue.push(patients);
+    let option;
+    do {
+    // Exibe a fila atual
+    let queue = patientQueue.map((patient, index) => `${index + 1}º ${patient}`).join("\n");
 
-    let menu = parseFloat(prompt(`Pacientes: ${patientQueue}\n
-        O que deseja fazer agora?
-        1. Adicionar paciente.
-        2. Consultar paciente.
-        3. Sair`))
+    option = prompt(
+        `Pacientes na fila:
+        \n${queue || "Nenhum paciente na fila."}\n
+        \nO que deseja fazer agora?
+        \n1. Adicionar paciente.
+        \n2. Consultar paciente.
+        \n3. Sair`
+    );
 
-    switch (menu) {
-        case 1:
-            
-            break;
-    
+    switch (option) {
+        case "1":
+        let newPatient = prompt("Digite o nome do novo paciente:");
+        if (newPatient) {
+            patientQueue.push(newPatient);
+            alert(`Paciente ${newPatient} adicionado à fila.`);
+        } else {
+            alert("Nome inválido! Tente novamente.");
+        }
+        break;
+
+        case "2":
+        if (patientQueue.length > 0) {
+            let attendedPatient = patientQueue.shift();
+            alert(`Paciente ${attendedPatient} foi consultado.`);
+        } else {
+            alert("Não há pacientes na fila para consultar.");
+        }
+        break;
+
+        case "3":
+            alert("Encerrando o programa...");
+        break;
+
         default:
-            break;
+        alert("Opção inválida. Digite um número entre 1 e 3.");
+        break;
     }
-
+    } while (option !== "3");
 }
+
 
