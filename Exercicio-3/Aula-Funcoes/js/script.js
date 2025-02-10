@@ -19,8 +19,6 @@ const venda = objeto("Placa de video 5090 TI", 1050, 3)
 
 // console.log(venda)
 
-
-
 function soma (numero1, numero2){
     return numero1 + numero2
 }
