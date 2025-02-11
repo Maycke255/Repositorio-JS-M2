@@ -21,76 +21,100 @@ alert(`Bem vindo ao menu de tarefas.`)
 
 let menu;
 
-do {
+// Função para exibir o menu e capturar o valor que o usuario digitar
+function displayMenu(){
+    let tasksList = listarTarefas(); // Pega a lista formatada
 
-    let tasksList = ""
-    for(let i = 0; i < tasks.length ; i++){
-        tasksList += `Sua lista de tarefas: ${(i + 1)} - ${tasks[i].tarefa}\n`
+    return parseFloat(prompt(`Sua lista de tarefas atual:`+
+        `${tasksList || `Sua lista de tarefas atual está vazia.`}`+
+        `1. Adicionar uma nova tarefa.`+
+        `2. Listar todas as tarefas.`+
+        `3. Remover uma tarefa.`+
+        `4. Sair.`
+    ));
+}
+
+function listarTarefas(){
+    if (tasks.length === 0) {
+        return "" // Retorna uma string vazia, caso não houver nada
+    } else {
+        // Loop para ler a lista
+            let tasksList = ""
+            for(let i = 0; i < tasks.length ; i++){
+            tasksList += `Sua lista de tarefas:\n`+
+            `${(i + 1)} - ${tasks[i].tarefa}\n`+
+            `Prioridade: ${tasks[i].prioridade}\n`
+        }
+    }
+    return tasksList
+}
+
+function addTask(){
+    const addTask = prompt(`Descreve a tarefa, coloque o que você precisa fazer.`)
+    const taskPriority = prompt(`Prioridade da tarefa, pode ser definida como alta, baixa ou média.`).toLowerCase();
+
+    while(taskPriority !== "alta" && taskPriority !== "média" && taskPriority !== "baixa"){
+        taskPriority = prompt(`Prioridade invalida! Por favor, ultilize "alta", "média" ou "baixa" (não esqueça do acento.)`).toLowerCase()
     }
 
-    menu = parseFloat(prompt(`Sua lista de tarefas atual:`+
-                            `${tasksList || `Sua lista de tarefas atual está vazia.`}`+
-                            `1. Adicionar uma nova tarefa.`+
-                            `2. Listar todas as tarefas.`+
-                            `3. Remover uma tarefa.`+
-                            `4. Sair.`
-    ));
+    const objectTask = {
+        tarefa: addTask,
+        prioridade: taskPriority
+    }
 
+    tasks.push(objectTask)
+    alert(`Tarefa adicionada com sucesso!`)
+}
+
+function displayTask() {
+    if (tasks === 0) {
+        alert(`Sua lista ainda esta vazia, por favor adicione algo.`)
+    } else {
+        let list = "Sua lista atual:\n\n"
+        for(let i = 0; i < tasks.length; i++){
+            list += `tarefa ${i + 1 }:\n`+
+            `Descrição: ${tasks[i].tarefa}\n`+
+            `Prioridade: ${tasks[i].prioridade}\n\n`+
+            `----------------------------------`
+        }
+        alert(list);
+    }
+}
+
+function removeTaks(){
+    if (tasks.length === 0) {
+        alert("Não há tarefas para remover.");
+    } else {
+        let indice = parseInt(prompt("Digite o número da tarefa que deseja remover:")) - 1;
+        if (!isNaN(indice) && indice >= 0 && indice < tasks.length) {
+            let tarefaRemovida = tasks.splice(indice, 1)[0];
+            alert(`Tarefa "${tarefaRemovida.tarefa}" removida com sucesso!`);
+        } else {
+            alert("Número inválido!");
+        }
+    }
+}
+
+function sair(){
+    alert(`Saíndo do programa...`)
+}
+
+do {
+    menu = displayMenu()
     switch (menu) {
         case 1:
-            const addTask = prompt(`Descreve a tarefa, coloque o que você precisa fazer.`)
-            const taskPriority = prompt(`Prioridade da tarefa, pode ser definida como alta, baixa ou média.`).toLowerCase();
+            addTask()
+        break;
+        case 2:
+            displayTask() || `Sua lista ainda esta vazia.`
+        break;
+        case 3:
+            removeTaks()
+        break;
+        case 4:
+            sair()
+        break;
 
-            while(taskPriority !== "alta" && taskPriority !== "média" && taskPriority !== "baixa"){
-                taskPriority = prompt(`Prioridade invalida! Por favor, ultilize "alta", "média" ou "baixa" (não esqueça do acento.)`).toLowerCase()
-            }
-
-            const objectTask = {
-                tarefa: addTask,
-                prioridade: taskPriority
-            }
-
-            tasks.push(objectTask)
-                alert(`Tarefa adicionada com sucesso!`)
-            break;
-
-            case 2:
-
-                if (tasks === 0) {
-                    alert(`Sua lista ainda esta vazia, por favor adicione algo.`)
-                } else {
-                    let list = "Sua lista atual:\n\n"
-                    for(let i = 0; i < tasks.length; i++){
-                        list += `tarefa ${i + 1 }:\n`+
-                        `Descrição: ${tasks[i].tarefa}\n`+
-                        `Prioridade: ${tasks[i].prioridade}\n\n`+
-                        `----------------------------------`
-                    }
-                    alert(list);
-                }
-                
-            break;
-
-            case 3:
-                if (tasks.length === 0) {
-                    alert("Não há tarefas para remover.");
-                } else {
-                    let indice = parseInt(prompt("Digite o número da tarefa que deseja remover:")) - 1;
-                    if (!isNaN(indice) && indice >= 0 && indice < tasks.length) {
-                        let tarefaRemovida = tasks.splice(indice, 1)[0];
-                        alert(`Tarefa "${tarefaRemovida.tarefa}" removida com sucesso!`);
-                    } else {
-                        alert("Número inválido!");
-                    }
-                }
-            break;
-
-            case 4:
-                alert(`Saíndo do programa...`)
-            break
-
-            
-    
         default:
             alert(`Opção invalida. Ultilize as opções por números de 1 a 4`)
         break;
