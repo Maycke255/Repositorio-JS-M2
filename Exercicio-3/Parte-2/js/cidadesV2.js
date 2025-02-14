@@ -19,7 +19,10 @@ function tourist (){
 /* Função para percorrer a array, caso a array não tenha nada a função da um return e para,
 caso tenha, ela percorre usando o for, nas cidades usamos o cities para acessar a array,
 em seguida acessamos o objeto que existe dentro da array que a cityVisited, a mesma coisa para
-os pontos turisticos. em seguida ela retorna a propria list */
+os pontos turisticos. em seguida ela retorna a propria list, usamos o .join também, o .join junta
+toda uma array em uma unica string separando as por um delimitador ou separador, nesse caso ele
+pede que quando encontrar um item separado por virgula dentro da array "Maça", "banana", 
+ele vai junta-los e separa-los por uma virgula e espaço: "Maça, Banana"  */
 function citiesList (){
     if (cities.length === 0){
         return `Nenhuma cidade ou ponto turistico visitado ainda.`
@@ -93,3 +96,35 @@ function removeCity () {
         }
     }
 }
+
+    function removeTouristPoint() {
+        if (cities.length === 0) {
+            alert("Não há cidades ou pontos turísticos para remover.");
+            return;
+        }
+
+        let cityIndex = parseInt(prompt(`Digite o número da cidade onde deseja remover um ponto turístico:\n
+                                        ${citiesList()}`)) - 1;
+
+        if (cityIndex >= 0 && cityIndex < cities.length) {
+            let city = cities[cityIndex];
+
+            if (city.touristPoint.length === 0) {
+                alert(`A cidade ${city.cityVisited} não possui pontos turísticos para remover.`);
+                return;
+            }
+
+            let pointIndex = parseInt(prompt(`Digite o número do ponto turístico que deseja remover:\n` +
+                                            city.touristPoint.map((point, i) => `${i + 1}. ${point}`).join("\n")
+                                            )) - 1;
+
+            if (pointIndex >= 0 && pointIndex < city.touristPoint.length) {
+                alert(`O ponto turístico "${city.touristPoint[pointIndex]}" foi removido.`);
+                    city.touristPoint.splice(pointIndex, 1);
+            } else {
+                alert("Número inválido, tente novamente.");
+            }
+        } else {
+            alert("Número inválido, tente novamente.");
+        }
+    }
