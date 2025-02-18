@@ -30,7 +30,7 @@ function citiesList (){
         let list = "Cidades visitadas:\n"
         for(let i = 0; i < cities.length; i++){
             list += `Cidade: ${(i+1)}\n`+
-                    `Cidades: ${cities[i].cityVisited}\n`+
+                    `Cidade: ${cities[i].cityVisited}\n`+
                     `Pontos turisticos visitados na cidade: ${cities[i].touristPoint.join(", ")}`+
                     `--------------------------\n`;
         }
@@ -59,8 +59,9 @@ function addCity () {
 
     while (cityYes === "sim") {
         const cityAdd = prompt(`Qual cidade você visitou nessa viajem?`)
-        const touristPointvisited = prompt(`Quais pontos turisticos você visitou nessa viajem? Separe-os por virgula, Ex: Museu, Igreja, Caverna.\n` +
-                                            `(Caso não tenha visitado, escreva apenas nenhum).`)
+        const touristPointvisited = prompt(`Quais pontos turísticos você visitou nessa viagem? Separe-os por vírgula, Ex: Museu, Igreja, Caverna.`)
+                            .split(",") // Transforma em array
+                            .map(point => point.trim()); // Remove espaços extras
 
         const addCities = {
             cityVisited: cityAdd,
@@ -89,42 +90,57 @@ function removeCity () {
     } else {
         let remove = parseFloat(prompt(`Digite o número da cidade pelo número indicativo no inicio.\n${citiesList()}`)) - 1;
         if (remove >= 0 && remove < cities.length) {
-            cities.splice(remove, 1)
             alert(`A cidade ${cities[remove].cityVisited} foi removida`)
+            cities.splice(remove, 1)
         } else {
             alert(`Número invalido, tente novamente.`)
         }
     }
 }
 
-    function removeTouristPoint() {
-        if (cities.length === 0) {
-            alert("Não há cidades ou pontos turísticos para remover.");
+/* o mais complicado de todos, remover os pontos turisticos, primeiro colocamos uma verificação, ela verifica se a pontos turisticos para remover,
+caso não haja, o valor da array cities for igual a 0, a função vai parar e dar um return, em seguida fazemos a mesma coisa do removeCity, diminuimos
+o valor do index -1, no caso - o valor que o usuario digitar. Em seguida, fazemos a verificação para o programa funcionar de fato, se o número que o usuario digitar
+for maior ou igual a 0 o programa funciona E também o número que o usuario digitar precisa ser menor que a lista presente dentro da array, no caso a quantidade
+de cidades ou pontos turisticos presentes, em seguida reatribuimos a array cities com o objeto selecionado pelo usuario.
+(Ex: let frutas = ["maça", "pera", "abacate", "romã"]
+let frutasNaCesta = frutas[1]
+console.log(frutasNaCesta) "pera"
+OU ->
+let pertgunta = prompt("Qual fruta você quer retirar da sua cesta?").tolowerCase()
+let retirada = frutas[pera] -> Reatribuimos a array frutas para uma variável de string normal, com a fruta selecionada pelo usuario
+console.log(retirada) "pera")
+Com isso fazemos mais uma verificação, acessamos a variável city que contém a array cities com o número que o usuario escolheu, acessamos o objeto dos pontos turisticos
+dentro dela, em seguida verificamos se possui pontos turisticos, caso não possua, o comprimento for igual a 0, a função para e exibe um alerta dizendo que a cidade
+visitada a qual esta interligada, não possui pontos turisticos para serem removidos.  */
+function removeTouristPoint() {
+    if (cities.length === 0) {
+        alert("Não há cidades ou pontos turísticos para remover.");
+        return;
+    }
+
+    let cityIndex = parseInt(prompt(`Digite o número da cidade onde deseja remover um ponto turístico:\n\n` +
+                                    citiesList())) - 1;
+
+    if (cityIndex >= 0 && cityIndex < cities.length) {
+        let city = cities[cityIndex];
+
+        if (city.touristPoint.length === 0) {
+            alert(`A cidade ${city.cityVisited} não possui pontos turísticos cadastrados.`);
             return;
         }
 
-        let cityIndex = parseInt(prompt(`Digite o número da cidade onde deseja remover um ponto turístico:\n
-                                        ${citiesList()}`)) - 1;
+        let pointList = city.touristPoint.map((point, i) => `${i + 1}. ${point}`).join("\n");
+        let pointIndex = parseInt(prompt(`Escolha o número do ponto turístico que deseja remover:\n\n${pointList}`)) - 1;
 
-        if (cityIndex >= 0 && cityIndex < cities.length) {
-            let city = cities[cityIndex];
-
-            if (city.touristPoint.length === 0) {
-                alert(`A cidade ${city.cityVisited} não possui pontos turísticos para remover.`);
-                return;
-            }
-
-            let pointIndex = parseInt(prompt(`Digite o número do ponto turístico que deseja remover:\n` +
-                                            city.touristPoint.map((point, i) => `${i + 1}. ${point}`).join("\n")
-                                            )) - 1;
-
-            if (pointIndex >= 0 && pointIndex < city.touristPoint.length) {
-                alert(`O ponto turístico "${city.touristPoint[pointIndex]}" foi removido.`);
-                    city.touristPoint.splice(pointIndex, 1);
-            } else {
-                alert("Número inválido, tente novamente.");
-            }
+        if (pointIndex >= 0 && pointIndex < city.touristPoint.length) {
+            let removedPoint = city.touristPoint[pointIndex]; // Armazena o nome antes de remover
+            city.touristPoint.splice(pointIndex, 1);
+            alert(`O ponto turístico "${removedPoint}" foi removido.`);
         } else {
             alert("Número inválido, tente novamente.");
         }
+    } else {
+        alert("Número inválido, tente novamente.");
     }
+}
