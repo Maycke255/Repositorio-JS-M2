@@ -112,7 +112,9 @@ let retirada = frutas[pera] -> Reatribuimos a array frutas para uma variável de
 console.log(retirada) "pera")
 Com isso fazemos mais uma verificação, acessamos a variável city que contém a array cities com o número que o usuario escolheu, acessamos o objeto dos pontos turisticos
 dentro dela, em seguida verificamos se possui pontos turisticos, caso não possua, o comprimento for igual a 0, a função para e exibe um alerta dizendo que a cidade
-visitada a qual esta interligada, não possui pontos turisticos para serem removidos.  */
+visitada a qual esta interligada, não possui pontos turisticos para serem removidos. Em seguida, criamos uma variável para mostrar ao usuario uma lista contendo
+os pontos turisticos cadastrados pelo usuario, como criamos a lista: 1. acessamos a variável city que contem a array cities, então acessamos o objeto touristPoint, 
+ainda no inicio  */
 function removeTouristPoint() {
     if (cities.length === 0) {
         alert("Não há cidades ou pontos turísticos para remover.");
