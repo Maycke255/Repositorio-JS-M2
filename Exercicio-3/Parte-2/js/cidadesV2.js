@@ -1,12 +1,12 @@
-/* Escreva um programa em javascript que peça o nome de um turista e então pergunte 
+/*Escreva um programa em javascript que peça o nome de um turista e então pergunte 
 se ele já visitou alguma cidade. Caso a resposta seja sim, pergunte o nome da cidade 
 e o armazene em uma variável, e então continue perguntando se o turista visitou 
 alguma outra cidade até que a resposta seja não. No fim, o programa deve exibir o 
-nome do turista, quantas e quais cidades ele visitou. */
+nome do turista, quantas e quais cidades ele visitou*/
 
 let cities = [] // array para armazenar as cidades e os pontos turisticos.
 
-let menu; // Variavel do menu fora do escpo da função para ser sempre acessivel.
+let menu; // Variavel do menu fora do escopo da função para ser sempre acessivel.
 let touristName; // Variavel para armazenar o nome do turista, fora de uma função, para sempre ser acessado.
 
 // Função para o usuario digitar o seu nome
@@ -114,7 +114,21 @@ Com isso fazemos mais uma verificação, acessamos a variável city que contém 
 dentro dela, em seguida verificamos se possui pontos turisticos, caso não possua, o comprimento for igual a 0, a função para e exibe um alerta dizendo que a cidade
 visitada a qual esta interligada, não possui pontos turisticos para serem removidos. Em seguida, criamos uma variável para mostrar ao usuario uma lista contendo
 os pontos turisticos cadastrados pelo usuario, como criamos a lista: 1. acessamos a variável city que contem a array cities, então acessamos o objeto touristPoint, 
-ainda no inicio  */
+ainda no inicio, e no para mostrar e verificar todos os pontos turisticos presentes naquele objeto dentro da array, utilizamos o .map, (serve para percorrer cada
+elemento da array como se fosse um pequeno for, o map so pode ser utilizando com funções, ela retorna uma nova array com o valor, point → Representa cada 
+elemento da array touristPoint (ou seja, cada ponto turístico), já o i → Representa o índice de cada item dentro da array, começando do 0. O primeiro argumento é 
+o elemento da array. O segundo argumento é o índice desse elemento, o map identifica isso automaticamente) no nosso caso, estamos utilizando o map com uma arrow 
+function, dentro do map passamos a função com dois valores já declarados, o point e o i, o point representa cada elemento string que o usuario colocou na array, 
+o i representa o indice de cada elemento dentro da array, já o point representa cada ponto turistico, e por fim, na mesma linha colocamos um join("\n"), o join como
+dito anteriormente, ele junta todos os elementos em uma unica string separando as por um delimitador, ou seja, sempre que ele encontrar mais de um objeto, 
+ex: "Cristio Redentor", "Pria", ele vai juntar ambos e separar os dois por uma quebra de linha.
+Depois de tudo isso, que demorou muito, criamos uma variável para exibir o a lista feita acima, para o usuario e pedir para ele indicar o número que quer remober,
+que no caso igual ao removeCity, o programa vai subtrair -1 para encontrar o indice certo.
+Depois do número ser escolhido, verificamos se o número e válido E se existe um objeto presente no indice que ele escolheu, após a verificação, armazenamos o ponto
+turistico que ele quer remover em uma variavel, ou seja acessamos, pegamos a variavel city que contém a variável cities, acessamos o touristPoint, e pegamos o ponto
+turistico que o usuario selecionou, após isso apenas removemos usando o splice, colocando o indice que o úsuario escolheu, e removendo apenas uma quantidade
+colocamos também um alert no else caso o usuario digite um número invalido no pointIndex e outro else no escopo externo representando a mesma coisa, mas nesse caso
+o usuario selecione um número invalido quando escolher a cidade para remover o ponto turistico  */
 function removeTouristPoint() {
     if (cities.length === 0) {
         alert("Não há cidades ou pontos turísticos para remover.");
@@ -132,7 +146,7 @@ function removeTouristPoint() {
             return;
         }
 
-        let pointList = city.touristPoint.map((point, i) => `${i + 1}. ${point}`).join("\n");
+        let pointList = city.touristPoint.map((point, i) => `${i + 1} - ${point}`).join("\n");
         let pointIndex = parseInt(prompt(`Escolha o número do ponto turístico que deseja remover:\n\n${pointList}`)) - 1;
 
         if (pointIndex >= 0 && pointIndex < city.touristPoint.length) {
@@ -146,3 +160,7 @@ function removeTouristPoint() {
         alert("Número inválido, tente novamente.");
     }
 }
+
+do {
+    
+} while (menu !== 4);
