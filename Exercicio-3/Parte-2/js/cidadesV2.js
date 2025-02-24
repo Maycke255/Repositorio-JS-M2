@@ -32,7 +32,7 @@ function citiesList (){
             list += `${(i+1)}\n`+
                     `Cidade: ${cities[i].cityVisited}\n`+
                     `Pontos turisticos visitados na cidade: ${cities[i].touristPoint.join(", ")}`+
-                    `--------------------------\n`;
+                    `\n--------------------------\n`;
         }
     return list;
     }
@@ -54,9 +54,8 @@ function menuDisplay () {
     return menu
 }
 
-function addCity () {
-    let cityYes = "sim"
-
+function addCity (){
+    let cityYes = prompt("Você visitou alguma cidade na sua viajem? (sim/não)").toLowerCase()
     while (cityYes === "sim") {
         const cityAdd = prompt(`Qual cidade você visitou nessa viajem?`).trim()
         if (!cityAdd) { /* Verifica se o usuario não digitou uma string vazia, caso o usuario o .trim e usado para remover espaços desnecessarios, então 
@@ -66,7 +65,8 @@ function addCity () {
         }
         const touristPointvisited = prompt(`Quais pontos turísticos você visitou nessa viagem? Separe-os por vírgula, Ex: Museu, Igreja, Caverna.`)
                             .split(",") // Transforma em array
-                            .map(point => point.trim()); // Remove espaços extras
+                            .map(point => point.trim()) // Remove espaços extras
+                            .filter(point => point.length > 0); // Remove entradas vazias
 
         const addCities = {
             cityVisited: cityAdd,
@@ -77,6 +77,7 @@ function addCity () {
 
         cityYes = prompt(`Você visitou mais alguma cidade na sua viajem? (sim/não)`).toLowerCase()
     }
+    return;
 }
 
 /* Essa parte foi uma das mais complicadas, e a função para remover a cidade, se não houver
@@ -97,8 +98,10 @@ function removeCity () {
         if (remove >= 0 && remove < cities.length) {
             alert(`A cidade ${cities[remove].cityVisited} foi removida`)
             cities.splice(remove, 1)
+            return;
         } else {
             alert(`Número invalido, tente novamente.`)
+            return;
         }
     }
 }
@@ -158,17 +161,16 @@ function removeTouristPoint() {
             let removedPoint = city.touristPoint[pointIndex]; // Armazena o nome antes de remover
             city.touristPoint.splice(pointIndex, 1);
             alert(`O ponto turístico "${removedPoint}" foi removido.`);
+            return;
         } else {
             alert("Número inválido, tente novamente.");
+            return;
         }
     } else {
         alert("Número inválido, tente novamente.");
+        return;
     }
 }
-
-do {
-    
-} while (menu !== 4);
 
 function executar (){
     do {
@@ -183,7 +185,7 @@ function executar (){
                 break;
 
             case 3:
-                removeTouristPoint
+                removeTouristPoint()
                 break;
 
             case 4:
