@@ -29,7 +29,7 @@ function citiesList (){
     } else {
         let list = "Cidades visitadas:\n"
         for(let i = 0; i < cities.length; i++){
-            list += `Cidade: ${(i+1)}\n`+
+            list += `${(i+1)}\n`+
                     `Cidade: ${cities[i].cityVisited}\n`+
                     `Pontos turisticos visitados na cidade: ${cities[i].touristPoint.join(", ")}`+
                     `--------------------------\n`;
@@ -44,7 +44,7 @@ chamada list novamente mesmo ela já estando criada, por que ela so existe dentr
 citiesList, então o correto e criar a mesma variavel e chama-la na variavel */
 function menuDisplay () {
     let list = citiesList()
-    menu = parseFloat(prompt(`Cidades visitadas de ${touristName}:\n`+
+    menu = parseInt(prompt(`Cidades visitadas de ${touristName}:\n`+
                             `${list}\n`+
                             `1. Adicionar uma cidade visitada e um ponto turistico.\n`+
                             `2. Remover uma cidade.\n`+
@@ -58,7 +58,12 @@ function addCity () {
     let cityYes = "sim"
 
     while (cityYes === "sim") {
-        const cityAdd = prompt(`Qual cidade você visitou nessa viajem?`)
+        const cityAdd = prompt(`Qual cidade você visitou nessa viajem?`).trim()
+        if (!cityAdd) { /* Verifica se o usuario não digitou uma string vazia, caso o usuario o .trim e usado para remover espaços desnecessarios, então 
+            se houver uma string VAZIA, esse if vai aparecer */
+            alert("Por favor, digite um nome de cidade valido.")
+            return;
+        }
         const touristPointvisited = prompt(`Quais pontos turísticos você visitou nessa viagem? Separe-os por vírgula, Ex: Museu, Igreja, Caverna.`)
                             .split(",") // Transforma em array
                             .map(point => point.trim()); // Remove espaços extras
@@ -164,3 +169,34 @@ function removeTouristPoint() {
 do {
     
 } while (menu !== 4);
+
+function executar (){
+    do {
+        menuDisplay()
+        switch (menu) {
+            case 1:
+                addCity()
+                break;
+
+            case 2:
+                removeCity()
+                break;
+
+            case 3:
+                removeTouristPoint
+                break;
+
+            case 4:
+                alert("Obrigado por usar o programa. Saíndo...")
+                break;
+        
+            default:
+                alert("Opção invalida, por favor, tente novamente")
+                break;
+        }
+
+    } while (menu !== 4);
+}
+
+tourist()
+executar()
