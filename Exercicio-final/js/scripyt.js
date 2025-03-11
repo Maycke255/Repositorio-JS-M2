@@ -25,9 +25,13 @@ let menu;
 alert("Bem vindo ao programa de cadastro de vagas de emprego");
 
 
-
+// 3. Visualizar uma vaga
 function viewAJobList (){
     let display = prompt(`Qual vaga você deseja visualizar? Por favor indique pelo número da vaga correspondente.`) - 1;
+
+    const sumCandidates = slots.numbers[display].reduce(function (accumulated, element){
+        return accumulated + element
+    }, 0)
     
     if (isNaN(display)) {
         alert(`Por favor, insira um número correspondete valido para acessar a vaga desejada...`)
@@ -39,11 +43,19 @@ function viewAJobList (){
             let element = slots[display]
             let list = `Vaga ${(display + 1)}\n`+
                         `Nome da vaga: ${element.job[display]}\n`+
-                        `Quantidade de candidatos inscritos nesta vaga: ${element.quantity[display]}`
+                        `Quantidade de candidatos inscritos nesta vaga: ${element.quantity[display]}\n`+
+                        `Descrição da vaga: ${element.description[display]}\n`+
+                        `Data limite da vaga: ${element.date[display]}\n`+
+                        `Numero de candidatos: ${}`
 
             return list
         }
     }
+}
+
+// 5. Excluir uma vaga
+function deleteJob (){
+
 }
 
 function system (){
