@@ -29,8 +29,8 @@ alert("Bem vindo ao programa de cadastro de vagas de emprego");
 function viewAJobList (){
     let display = prompt(`Qual vaga você deseja visualizar? Por favor indique pelo número da vaga correspondente.`) - 1;
 
-    const sumCandidates = slots.numbers[display].reduce(function (accumulated, element){
-        return accumulated + element
+    const sumCandidates = slots.reduce(function (accumulated, element){
+        return accumulated + element.numbers[display]
     }, 0)
     
     if (isNaN(display)) {
