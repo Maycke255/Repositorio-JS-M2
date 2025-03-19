@@ -44,11 +44,33 @@ function listJobs (){
 
 // 2. Criar uma nova vaga
 function addJob (){
-    let name = prompt(`Por favor, digite o nome da vaga. (Ex: Dev. Full Stack)`);
+    let job = prompt(`Por favor, digite o nome da vaga. (Ex: Dev. Full Stack)`);
     let description = prompt(`Por favor, digite uma breve descrição para a vaga. (Ex: "Você será responsavel por toda parte de Front e Back end da equipe, ultilizando 
                             JavaScript, HTML, CSS, React e python")`);
     let date = prompt(`Por favor, digite uma data para ecerração da vaga, ou seja a data em que as candidaturas da vaga irão expirar.`);
-    let candidates = prompt(`Deseja adicionar um candidato de inicio? Você poderá adicionar mais tarde caso não queira.`);
+    let candidates = prompt(`Deseja adicionar um candidato de inicio? Você poderá adicionar mais tarde caso não queira. (sim/não)`);
+
+    if (candidates !== "sim" || candidates !== "não"){
+        let send = {
+            job,
+            description,
+            date
+        }
+
+        slots.push(send);
+
+        alert(`Por favor, responda apenas com sim ou não.`);
+        alert(`Foram salvos na sua vaga apenas o nome: ${job}, a descrição: ${description} e a data limite: ${date}, como você não adicionou nenhum candidato por que
+            não selecionou "sim" ou "não", mas poderá adicionar mais tarde`);
+            
+        return;
+    } else {
+        if (candidates === "sim") {
+            
+        } else {
+            
+        }
+    }
 }
 
 // 3. Visualizar uma vaga
