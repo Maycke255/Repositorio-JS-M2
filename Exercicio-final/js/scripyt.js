@@ -65,59 +65,65 @@ function addJob (){
     };
             
     if (candidatesYes === "sim") {
-        let candidatesMore = "sim"
-        while (candidatesMore === "sim" ) {
-            let candidateName = prompt(`Por favor, informe o nome do candidato para adicionar a vaga.`);
+        let candidatesMore = "sim";
+        while (candidatesMore === "sim") {
+            let candidateName = prompt("Por favor, informe o nome do candidato para adicionar à vaga.");
+            if (candidateName) {
+                send.candidates.push(candidateName);
+            } else {
+                alert("O nome do candidato é obrigatório. Candidato não adicionado.");
+            }
 
-            send.candidates.push(candidateName);
-
-            candidatesMore = prompt(`Deseja adicionar mais algum candidato de inicio? Lembrando que você poderá adicionar mais depois. (sim/não)`)
-                .toLowerCase();
+            candidatesMore = prompt("Deseja adicionar mais algum candidato de início? Lembrando que você poderá adicionar mais depois. (sim/não)").toLowerCase();
+            if (candidatesMore !== "sim" && candidatesMore !== "não") {
+                alert("Por favor, responda apenas com 'sim' ou 'não'. A adição de candidatos será encerrada.");
+                candidatesMore = "não";
+            }
         }
     }
 
-    let confirm = confirm(`Deseja adicionar a vaga "${job}" com as seguintes informações?\n` +
+    let confirmAdd = confirm(`Deseja adicionar a vaga "${job}" com as seguintes informações?\n` +
         `Descrição: ${description}\n` +
         `Data limite: ${date}\n` +
         `Candidatos: ${send.candidates.length > 0 ? send.candidates.join(", ") : "Nenhum candidato adicionado."}`);
 
-    if (confirm){
-        slots.push(send)
-        alert("A vaga foi adicionada.")
-        return;
+    if (confirmAdd) {
+        slots.push(send);
+        alert("A vaga foi adicionada com sucesso!");
     } else {
-        alert("Operação cancelada, retornando para o menu principal...")
-        return;
+        alert("Operação cancelada. A vaga não foi adicionada.");
     }
 }
 
 // 3. Visualizar uma vaga
 function viewAJobList (){
-    // persgunta o número da vaga que o usuario quer acessar, no caso pergunta a posição do objeto, caso tenha muitos objetos(vagas)
-    let display = parseInt(prompt(`Qual vaga você deseja visualizar? Por favor indique pelo número da vaga correspondente.`)) - 1;
-
-    /* o que vai ter dentro de um objeto na array:
-    {job: "Dev full stack, description: "Precisa fazer toda a parte front tanto back end do sistema", date: "18/07/2025", candidates: ["Maycke", "Carlos,", "Giovanna",
-    "Ana Clara", "Lucas Gabriel"]} */
-    if (isNaN(display) || display < 0 || display >= slots.length) {
-        alert(`Por favor, insira um número correspondete valido para acessar a vaga desejada...`)
+    if (slots.length === 0) {
+        alert("Você não tem vagas para visualizar no momento, tente cadastrar algumas antes")
         return;
-    } else {
-        if (slots.length === 0) {
-            alert("Você não tem vagas para visualizar no momento, tente cadastrar algumas antes")
+    }    
+
+    let view = slots.map(function (element, i){
+        return `${(i + 1)}. ${element.job}`
+    }).join("\n")
+    
+    let display = parseInt(prompt(`Qual vaga você deseja visualizar? Por favor indique pelo número da vaga correspondente.\n`+
+                                `${view}\n`
+    )) - 1;
+
+    if (isNaN(display) || display < 0 || display >= slots.length) {
+            alert(`Por favor, insira um número correspondete valido para acessar a vaga desejada...`)
             return;
-        } else {
-            let element = slots[display]
+    } else {
+        let element = slots[display]
 
-            let list = `Vaga ${(display + 1)}\n`+
-                        `Nome da vaga: ${element.job}\n`+
-                        `Descrição da vaga: ${element.description}\n`+
-                        `Data limite da vaga: ${element.date}\n`+
-                        `Numero de candidatos: ${element.candidates.length}\n`+
-                        `Candidatos para a vaga: ${element.candidates.join(", ")}`
+        let list = `Vaga ${(display + 1)}\n`+
+                    `Nome da vaga: ${element.job}\n`+
+                    `Descrição da vaga: ${element.description}\n`+
+                    `Data limite da vaga: ${element.date}\n`+
+                    `Numero de candidatos: ${element.candidates.length}\n`+
+                    `Candidatos para a vaga: ${element.candidates.join(", ")}`
 
-            alert(list)
-        }
+        alert(list)
     }
 }
 
@@ -157,18 +163,72 @@ function addCandidate (){
 
         candidateMore = prompt(`Deseja adicionar mais algum candidato a esta vaga ${selected}? (sim/não)`).toLowerCase()
 
-        if (adicionarMais !== "sim" && adicionarMais !== "não") {
+        if (candidateMore !== "sim" && candidateMore !== "não") {
             alert("Por favor, responda apenas com 'sim' ou 'não'.");
             adicionarMais = "não"; 
         }
     }
 }
 
+// 5. Remover um candidato de uma vaga
 function deleteCandidate (){
+    if (slots.length === 0) {
+        alert(`Não a vagas cadastradas, por favor, cadastre alguma antes...`);
+        return;
+    }
 
+    let view = slots.map(function (element, i){
+        return `${(i + 1)} - ${element.job}`
+    }).join("\n");
+
+    let selectedJob = parseInt(prompt(`Por favor, selecione a vaga desejada de acordo com o número indicativo a sua frente.\n`+
+                                    `${view}`
+    )) - 1;
+
+    if (isNaN(selectedJob) || selectedJob < 0 || selectedJob >= slots.length) {
+        alert("Número inválido. Por favor, tente novamente.");
+        return;
+    }
+
+    let selectedCandidate = slots[selectedJob].candidates
+
+    if (selectedCandidate.length === 0) {
+        alert(`Não há candidatos nessa vaga, por favor implemente candidatos nesta vaga antes de remover...`)
+        return;
+    }
+
+    let viewCandidates = selectedCandidate.map(function (element, i){
+        return `${(i + 1)} - ${element}`
+    }).join("\n")
+
+    if (isNaN(selectedJob) || selectedJob < 0 || selectedJob >= slots.length) {
+        alert("Numero invalido, por favor tente novamente...")
+        return;
+    } else {
+        let removeCandidate = parseInt(prompt(`Por favor, selecione o candidato que desejada remover da vaga de acordo com o número indicativo a sua frente.\n`+
+                                                `${viewCandidates}`
+        )) - 1;
+
+        if (isNaN(removeCandidate) || removeCandidate < 0 || removeCandidate >= selectedCandidate.length) {
+            alert("Numero invalido, por favor tente novamente...")
+            return;
+        } else {
+            let candidateName = selectedCandidate[removeCandidate];
+            let jobName = slots[selectedJob].job
+            let confirmRemove = confirm(`Deseja remover o candidato ${candidateName} da vaga ${jobName}?`);
+
+            if (confirmRemove) {
+                selectedCandidate.splice(removeCandidate, 1);
+                alert(`O candidato ${candidateName} foi excluido da vaga ${jobName}.`);
+                return;
+            } else {
+                alert(`Operação cancelada, o candidato não foi removido, voltando ao menu principal...`)
+            }
+        }
+    }
 }
 
-// 5. Excluir uma vaga
+// 6. Excluir uma vaga
 function deleteJob (){
     let display;
 
@@ -176,37 +236,45 @@ function deleteJob (){
         alert(`Você não tem nenhuma vaga para remover, tente adicionar uma primeiro.`);
         return;
     } else {
+        let view = slots.map(function (element, i){
+            return `${(i + 1)} - ${element.job}`
+        }).join("\n");
+
         display = parseInt(prompt(`Digite o número correspondente da vaga que você deseja visualizar(ao excluir uma vaga você também exclui todos os dados dessa vaga, como
-                                    descrição, data, candidatos, etc).`)) - 1;
-    } if (isNaN(display) || display < 0 || display >= slots.length) {
+                                    descrição, data, candidatos, etc).\n`+
+                                    `${view}`)) - 1;
+    }
+
+    if (isNaN(display) || display < 0 || display >= slots.length) {
         alert(`Por favor insira um número valido, e que esteja dentro das vagas.`);
         return;
-    } else {
-        let confirm = confirm(`Deseja remover a vaga ${remove.job} da sua lista?`)
-        let remove = slots.splice(display, 1)[0];
+    }
 
-        if (confirm) {
-            alert(`A vaga ${remove.job} foi apagada.`);
-            return;
-        } else {
-            alert("Operação cancelada, retornando para o menu principal...")
-        }
+    let selectedJob = slots[display];
+
+    let userConfirm = confirm(`Deseja remover a vaga ${selectedJob.job} da sua lista?`)
+
+    if (userConfirm) {
+        slots.splice(display, 1)
+        alert(`A vaga ${selectedJob.job} foi apagada.`);
+        return;
+    } else {
+        alert("Operação cancelada, retornando para o menu principal...")
     }
 }
 
-let count = slots.reduce(function (accumulated, element){
-    return `Total de vagas cadastradas: ${(element + accumulated)}`
-}, 0)
-
 function displayMenu (){
+    let vagasCadastradas = slots.length === 0 ? "Nenhuma vaga cadastrada ainda." : `Total de vagas cadastradas: ${slots.length}`;
+
     menu = parseFloat(prompt(`O que deseja fazer? Selecione a opção usando oo número correspondente a sua frente.\n`+
-        `${slots.length === 0 ? count : "Nenhuma vaga cadastrada ainda."}\n`+
+        `${vagasCadastradas}\n`+
         `1. Listar vagas disponíveis\n`+
         `2. Criar um nova vaga\n`+
         `3. Visualizar uma vaga\n`+
         `4. Inscrever um candidato em uma vaga\n`+
-        `5. Excluir uma vaga\n`+
-        `6. Sair `
+        `5. Remover um candidato de uma vaga.\n`+
+        `6. Excluir uma vaga\n`+
+        `7. Sair `
     ))
 }
 
@@ -232,18 +300,22 @@ function system (){
                 break;
 
             case 5:
-                deleteJob()
+                deleteCandidate()
                 break;
 
             case 6:
+                deleteJob()
+                break;
+
+            case 7:
                 alert(`Obrigado por usar o programa, até mais...`)
                 break;
         
             default:
-                alert("Opção inválida, por favor escolha uma opção de 1 a 6.")
+                alert("Opção inválida, por favor escolha uma opção de 1 a 7.")
                 break;
         }
-    } while (menu !== 6);
+    } while (menu !== 7);
 }
 
 system()
